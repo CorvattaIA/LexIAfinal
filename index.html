@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ciberabogados</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    :root {
+      /* New Color Palette */
+      --sky-blue-light: #9FE7F5;
+      --sky-blue-medium: #429EBD;
+      --deep-blue-dark: #053F5C; /* Primary Background */
+      --golden-accent: #F7AD19;  /* Primary CTA & Highlight */
+
+      /* Neutrals & Supporting */
+      --text-on-dark: #FFFFFF;
+      --text-on-dark-soft: var(--sky-blue-light);
+      --text-on-light: var(--deep-blue-dark);
+      --surface-subtle: #0A4F76; /* Slightly lighter than deep-blue-dark for cards */
+      --border-subtle: var(--sky-blue-medium);
+      --border-highlight: var(--golden-accent);
+
+      /* Old colors (to be replaced or removed if not mapped) */
+      /* --azul-electrico: #0055FF; */
+      /* --purpura-profundo: #6E2FD6; */
+      /* --turquesa-neon: #00E8C6; */
+      /* --negro-espacial: #121212; */
+      /* --gris-plata: #E6E6E6; */
+      /* --blanco-puro: #FFFFFF; */
+      /* --gris-oscuro-surf: #1A1A1A; */
+    }
+
+    /* Custom scrollbar */
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: var(--deep-blue-dark);
+    }
+    ::-webkit-scrollbar-thumb {
+      background: var(--sky-blue-medium);
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: var(--golden-accent);
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: var(--deep-blue-dark);
+      color: var(--text-on-dark);
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    h1, h2, h3, h4, h5, h6, .font-title {
+      font-family: 'Playfair Display', serif;
+      font-weight: 700; /* Default bold for Playfair */
+    }
+    
+    .soft-shadow { /* This might need adjustment with new dark theme */
+      box-shadow: 0px 4px 8px rgba(0,0,0,0.3), 0px 2px 4px rgba(0,0,0,0.2);
+    }
+
+    /* Basic page transition */
+    .page-enter {
+      animation: fadeIn 0.3s ease-out;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+<script type="importmap">
+{
+  "imports": {
+    "react-dom/": "https://esm.sh/react-dom@^19.1.0/",
+    "react/": "https://esm.sh/react@^19.1.0/",
+    "react": "https://esm.sh/react@^19.1.0",
+    "react-router-dom": "https://esm.sh/react-router-dom@^7.6.1",
+    "@google/genai": "https://esm.sh/@google/genai@^1.1.0",
+    "@supabase/supabase-js": "https://esm.sh/@supabase/supabase-js@^2.39.0",
+    "react-hook-form": "https://esm.sh/react-hook-form@^7.51.0",
+    "zod": "https://esm.sh/zod@^3.22.4",
+    "@hookform/resolvers/": "https://esm.sh/@hookform/resolvers@^3.3.4/"
+  }
+}
+</script>
+<!-- 
+  In a real production environment, these Supabase variables would be 
+  set as environment variables and accessed via process.env by a build tool 
+  or a server. For this static context, they are commented out.
+  The supabaseService.ts will attempt to use process.env.SUPABASE_URL and 
+  process.env.SUPABASE_ANON_KEY, assuming they are made available.
+  window.SUPABASE_URL = 'YOUR_SUPABASE_URL';
+  window.SUPABASE_ANON_KEY = 'YOUR_SUPABASE_ANON_KEY'; 
+-->
+</head>
+<body class="bg-[var(--deep-blue-dark)] text-[var(--text-on-dark)]">
+  <div id="root"></div>
+  <script type="module" src="/index.tsx"></script>
+</body>
+</html><link rel="stylesheet" href="index.css">
+<script src="index.tsx" type="module"></script>
