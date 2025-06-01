@@ -1,11 +1,13 @@
 import React, { useEffect, useRef, useState } from 'react';
 import Icon from './Icon';
 import { AnimatePresence, motion } from 'framer-motion';
+import Typography from './Typography';
 
 interface ModalProps {
   isOpen: boolean;
   onClose: () => void;
   title?: string;
+  description?: string;
   children: React.ReactNode;
   size?: 'sm' | 'md' | 'lg' | 'xl' | 'full';
   closeOnClickOutside?: boolean;
@@ -16,12 +18,15 @@ interface ModalProps {
   footer?: React.ReactNode;
   className?: string;
   animationVariant?: 'fade' | 'scale' | 'slide';
+  ariaLabelledBy?: string;
+  ariaDescribedBy?: string;
 }
 
 const Modal: React.FC<ModalProps> = ({
   isOpen,
   onClose,
   title,
+  description,
   children,
   size = 'md',
   closeOnClickOutside = true,
@@ -32,10 +37,47 @@ const Modal: React.FC<ModalProps> = ({
   footer,
   className = '',
   animationVariant = 'scale',
+  ariaLabelledBy,
+  ariaDescribedBy,
 }) => {
   const [isClosing, setIsClosing] = useState(false);
   const modalRef = useRef<HTMLDivElement>(null);
+  const closeButtonRef = useRef<HTMLButtonElement>(null);
+  
+  // Generar IDs únicos para accesibilidad si no se proporcionan
+  const modalId = useRef(`modal-${Math.random().toString(36).substr(2, 9)}`);
+  const titleId = ariaLabelledBy || (title ? `${modalId.current}-title` : undefined);
+  const descriptionId = ariaDescribedBy || (description ? `${modalId.current}-description` : undefined);
 
+  // Manejar accesibilidad y foco cuando el modal se abre/cierra
+  useEffect(() => {
+    if (isOpen) {
+      // Guardar el elemento que tenía el foco antes de abrir el modal
+      const activeElement = document.activeElement as HTMLElement;
+      
+      // Establecer foco en el botón de cierre o en el modal
+      setTimeout(() => {
+        if (showCloseButton && closeButtonRef.current) {
+          closeButtonRef.current.focus();
+        } else if (modalRef.current) {
+          modalRef.current.focus();
+        }
+      }, 50);
+      
+      // Bloquear scroll del body
+      document.body.style.overflow = 'hidden';
+      
+      return () => {
+        // Restaurar el foco al elemento anterior cuando se cierra
+        if (activeElement) {
+          activeElement.focus();
+        }
+        // Restaurar scroll
+        document.body.style.overflow = '';
+      };
+    }
+  }, [isOpen, showCloseButton]);
+  
   // Close on escape key
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -146,6 +188,7 @@ const Modal: React.FC<ModalProps> = ({
           animate="visible"
           exit="exit"
           variants={backdropVariants}
+          role="presentation"
         >
           {/* Backdrop with blur effect */}
           <motion.div 
@@ -154,6 +197,7 @@ const Modal: React.FC<ModalProps> = ({
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.2 }}
+            aria-hidden="true"
           />
           
           {/* Modal content with animation */}
@@ -164,28 +208,64 @@ const Modal: React.FC<ModalProps> = ({
             initial="hidden"
             animate="visible"
             exit="exit"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby={titleId}
+            aria-describedby={descriptionId}
+            tabIndex={-1}
+            id={modalId.current}
           >
             {/* Efecto de borde con gradiente mejorado y efecto sutil */}
-            <div className="absolute inset-0 rounded-xl p-[1px] -z-10 bg-gradient-to-br from-[var(--sunshine)]/30 via-[var(--steel-blue)]/20 to-[var(--steel-blue)]/30 opacity-70 hover:opacity-100 transition-all duration-500 animate-pulse-subtle border-glow"></div>
+            <div 
+              className="absolute inset-0 rounded-xl p-[1px] -z-10 bg-gradient-to-br from-[var(--sunshine)]/30 via-[var(--steel-blue)]/20 to-[var(--steel-blue)]/30 opacity-70 hover:opacity-100 transition-all duration-500 animate-pulse-subtle border-glow"
+              aria-hidden="true"
+            ></div>
             
             {/* Efecto de brillo en las esquinas */}
-            <div className="absolute -top-1 -left-1 w-16 h-16 bg-[var(--steel-blue)]/10 rounded-full blur-xl opacity-0 group-hover:opacity-70 transition-opacity duration-300"></div>
-            <div className="absolute -bottom-1 -right-1 w-16 h-16 bg-[var(--sunshine)]/10 rounded-full blur-xl opacity-0 group-hover:opacity-70 transition-opacity duration-300"></div>
+            <div 
+              className="absolute -top-1 -left-1 w-16 h-16 bg-[var(--steel-blue)]/10 rounded-full blur-xl opacity-0 group-hover:opacity-70 transition-opacity duration-300"
+              aria-hidden="true"
+            ></div>
+            <div 
+              className="absolute -bottom-1 -right-1 w-16 h-16 bg-[var(--sunshine)]/10 rounded-full blur-xl opacity-0 group-hover:opacity-70 transition-opacity duration-300"
+              aria-hidden="true"
+            ></div>
             
             {title && (
               <div className={`flex justify-between items-center p-5 ${headerBorderClass}`}>
-                <h3 className="text-lg font-semibold text-[var(--text-primary)] title-case-es">{title}</h3>
+                <Typography 
+                  variant="heading-4" 
+                  id={titleId}
+                  weight="semibold"
+                  capitalization="title-case"
+                  className="text-[var(--text-primary)]"
+                >
+                  {title}
+                </Typography>
+                {description && (
+                  <Typography 
+                    variant="body-small" 
+                    id={descriptionId}
+                    className="sr-only"
+                  >
+                    {description}
+                  </Typography>
+                )}
                 {showCloseButton && (
                   <button
+                    ref={closeButtonRef}
                     onClick={handleClose}
                     className="text-[var(--coal)] hover:text-[var(--steel-blue)] transition-all duration-300 p-2 rounded-full 
                       hover:bg-[var(--bone)] hover:scale-110 active:scale-95 
                       focus:outline-none focus:ring-2 focus:ring-[var(--steel-blue)]/50 
                       relative overflow-hidden group"
-                    aria-label="Close"
+                    aria-label="Cerrar modal"
                   >
                     {/* Efecto de brillo en hover */}
-                    <span className="absolute inset-0 bg-[var(--steel-blue)]/0 group-hover:bg-[var(--steel-blue)]/10 rounded-full transition-all duration-300"></span>
+                    <span 
+                      className="absolute inset-0 bg-[var(--steel-blue)]/0 group-hover:bg-[var(--steel-blue)]/10 rounded-full transition-all duration-300"
+                      aria-hidden="true"
+                    ></span>
                     
                     <motion.div
                       whileHover={{ 

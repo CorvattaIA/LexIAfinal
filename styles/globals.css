@@ -2,25 +2,53 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Importar tokens de diseño centralizados */
+@import './designTokens.css';
+
 :root {
-  /* Nueva Paleta de Colores */
-  --bone: #F8F1E5;
-  --steel-blue: #426E86;
-  --sunshine: #F9BA32;
-  --coal: #2F3131;
+  /* Paleta de Colores - Bone (Beige claro) */
+  --bone-light: #FAF5EC;
+  --bone-base: #F8F1E5;
+  --bone-dark: #EFE8DC;
   
-  /* Variaciones de colores principales */
-  --steel-blue-light: #5a8ca6;
-  --steel-blue-dark: #355a6e;
-  --sunshine-light: #fac858;
-  --sunshine-dark: #e6a618;
-  --bone-dark: #e8e1d5;
+  /* Paleta de Colores - Steel Blue (Azul acero) */
+  --steel-blue-light: #5A8CA8;
+  --steel-blue-base: #426E86;
+  --steel-blue-dark: #355A6D;
+  
+  /* Paleta de Colores - Sunshine (Amarillo) */
+  --sunshine-light: #FFCB47;
+  --sunshine-base: #F9BA32;
+  --sunshine-dark: #E5A92A;
+  
+  /* Paleta de Colores - Coal (Gris oscuro) */
+  --coal-light: #3F4141;
+  --coal-base: #2F3131;
+  --coal-dark: #252727;
+  
+  /* Alias para compatibilidad con código existente */
+  --bone: var(--bone-base);
+  --steel-blue: var(--steel-blue-base);
+  --sunshine: var(--sunshine-base);
+  --coal: var(--coal-base);
+  
+  /* Colores de estado - Mejorados para accesibilidad (WCAG AA) */
+  --success: #2E7D32; /* Verde más oscuro para mejor contraste */
+  --warning: #ED6C02; /* Naranja más oscuro para mejor contraste */
+  --error: #D32F2F; /* Rojo más oscuro para mejor contraste */
+  --info: #0288D1; /* Azul más oscuro para mejor contraste */
+  
+  /* Colores de estado - Versiones claras para fondos oscuros */
+  --success-light: #4CAF50;
+  --warning-light: #F59E0B;
+  --error-light: #EF4444;
+  --info-light: #3B82F6;
   
   /* Mantener colores anteriores para compatibilidad */
   --deep-blue-dark: #0d1b2a;
   --deep-blue-medium: #1b263b;
   --deep-blue-light: #2c3e50;
-  --golden-accent: var(--sunshine);
+  --golden-accent: var(--sunshine-base);
   --golden-accent-hover: var(--sunshine-light);
   --golden-accent-active: var(--sunshine-dark);
   --teal-accent: #2a9d8f;
@@ -34,115 +62,314 @@
   --neon-blue: var(--steel-blue-light);
   --neon-purple: #bc13fe;
 
-  /* Surface Colors - Actualizados */
-  --surface-background: var(--bone);
+  /* Surface Colors - Actualizados para mejor contraste */
+  --surface-background: var(--bone-base);
   --surface-elevated: #FFFFFF;
   --surface-subtle: var(--bone-dark);
-  --surface-hover: rgba(66, 110, 134, 0.05);
-  --surface-active: rgba(66, 110, 134, 0.1);
+  --surface-hover: rgba(66, 110, 134, 0.08); /* Aumentado para mejor visibilidad */
+  --surface-active: rgba(66, 110, 134, 0.15); /* Aumentado para mejor visibilidad */
+  --surface-disabled: rgba(47, 49, 49, 0.05);
+  --surface-overlay: rgba(47, 49, 49, 0.5);
 
-  /* Text Colors - Actualizados */
-  --text-primary: var(--coal);
-  --text-secondary: var(--steel-blue);
+  /* Text Colors - Actualizados para mejor contraste (WCAG AA) */
+  --text-primary: var(--coal-base);
+  --text-secondary: var(--steel-blue-base);
   --text-on-dark: #FFFFFF;
-  --text-on-dark-soft: rgba(255, 255, 255, 0.85);
-  --text-on-accent: var(--coal);
-  --text-muted: rgba(47, 49, 49, 0.6);
+  --text-on-dark-soft: rgba(255, 255, 255, 0.9); /* Aumentado para mejor legibilidad */
+  --text-on-accent: var(--coal-dark); /* Más oscuro para mejor contraste */
+  --text-muted: rgba(47, 49, 49, 0.75); /* Aumentado para mejor legibilidad */
+  --text-disabled: rgba(47, 49, 49, 0.4);
 
-  /* Border Colors */
-  --border-subtle: rgba(47, 49, 49, 0.1);
-  --border-accent: var(--sunshine);
+  /* Border Colors - Mejorados para accesibilidad */
+  --border-subtle: rgba(47, 49, 49, 0.15); /* Aumentado para mejor visibilidad */
+  --border-accent: var(--sunshine-base);
+  --border-focus: var(--steel-blue-base);
+  --border-error: var(--error);
 
-  /* Status Colors */
-  --success: #22c55e;
-  --warning: #f59e0b;
-  --error: #ef4444;
-  --info: #3b82f6;
+  /* Focus Styles - Para accesibilidad por teclado */
+  --focus-ring-color: rgba(66, 110, 134, 0.5);
+  --focus-ring-offset: 2px;
+  --focus-ring-width: 3px;
 
-  /* Spacing System */
+  /* Spacing System - Extendido para mayor flexibilidad */
+  --space-0: 0;
+  --space-0-5: 0.125rem;
   --space-1: 0.25rem;
+  --space-1-5: 0.375rem;
   --space-2: 0.5rem;
+  --space-2-5: 0.625rem;
   --space-3: 0.75rem;
+  --space-3-5: 0.875rem;
   --space-4: 1rem;
+  --space-5: 1.25rem;
   --space-6: 1.5rem;
+  --space-7: 1.75rem;
   --space-8: 2rem;
+  --space-9: 2.25rem;
+  --space-10: 2.5rem;
+  --space-11: 2.75rem;
   --space-12: 3rem;
+  --space-14: 3.5rem;
   --space-16: 4rem;
+  --space-20: 5rem;
   --space-24: 6rem;
+  --space-28: 7rem;
+  --space-32: 8rem;
+  --space-36: 9rem;
+  --space-40: 10rem;
 
-  /* Typography */
-  --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
-  --font-serif: 'Playfair Display', Georgia, serif;
-  --font-mono: 'JetBrains Mono', monospace;
+  /* Typography - Actualizado para mejor jerarquía */
+  --font-sans: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  --font-serif: 'Playfair Display', Georgia, Cambria, 'Times New Roman', Times, serif;
+  --font-mono: 'JetBrains Mono', Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace;
+  
+  /* Tamaños de fuente - Optimizados para legibilidad */
+  --font-size-xs: 0.75rem;
+  --font-size-sm: 0.875rem;
+  --font-size-base: 1rem;
+  --font-size-lg: 1.125rem;
+  --font-size-xl: 1.25rem;
+  --font-size-2xl: 1.5rem;
+  --font-size-3xl: 1.875rem;
+  --font-size-4xl: 2.25rem;
+  --font-size-5xl: 3rem;
+  --font-size-6xl: 3.75rem;
+  
+  /* Pesos de fuente */
+  --font-weight-light: 300;
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+  --font-weight-extrabold: 800;
+  
+  /* Altura de línea */
+  --line-height-none: 1;
+  --line-height-tight: 1.25;
+  --line-height-snug: 1.375;
+  --line-height-normal: 1.5;
+  --line-height-relaxed: 1.625;
+  --line-height-loose: 2;
+  
+  /* Radios de borde */
+  --radius-none: 0;
+  --radius-sm: 0.125rem;
+  --radius-base: 0.25rem;
+  --radius-md: 0.375rem;
+  --radius-lg: 0.5rem;
+  --radius-xl: 0.75rem;
+  --radius-2xl: 1rem;
+  --radius-3xl: 1.5rem;
+  --radius-full: 9999px;
 }
 
 /* Base Styles */
 body {
   @apply bg-[var(--surface-background)] text-[var(--text-primary)];
   font-family: var(--font-sans);
+  font-size: var(--font-size-base);
+  line-height: var(--line-height-normal);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
+/* Mejora de accesibilidad: outline para elementos focusables */
+:focus-visible {
+  outline: var(--focus-ring-width) solid var(--focus-ring-color);
+  outline-offset: var(--focus-ring-offset);
+}
+
+/* Sistema tipográfico mejorado */
 h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-serif);
   @apply font-semibold tracking-tight;
+  color: var(--coal-dark); /* Mejor contraste para encabezados */
 }
 
 h1 {
-  @apply text-4xl md:text-5xl mb-6;
+  font-size: var(--font-size-4xl);
+  line-height: var(--line-height-tight);
+  @apply mb-6;
 }
 
 h2 {
-  @apply text-3xl md:text-4xl mb-5;
+  font-size: var(--font-size-3xl);
+  line-height: var(--line-height-tight);
+  @apply mb-5;
 }
 
 h3 {
-  @apply text-2xl md:text-3xl mb-4;
+  font-size: var(--font-size-2xl);
+  line-height: var(--line-height-tight);
+  @apply mb-4;
 }
 
 h4 {
-  @apply text-xl md:text-2xl mb-3;
+  font-size: var(--font-size-xl);
+  line-height: var(--line-height-snug);
+  @apply mb-3;
 }
 
 h5 {
-  @apply text-lg md:text-xl mb-2;
+  font-size: var(--font-size-lg);
+  line-height: var(--line-height-snug);
+  @apply mb-2;
 }
 
 h6 {
-  @apply text-base md:text-lg mb-2;
+  font-size: var(--font-size-base);
+  line-height: var(--line-height-normal);
+  @apply mb-2;
 }
 
+/* Párrafos con mejor legibilidad */
 p {
-  @apply mb-4 leading-relaxed;
+  @apply mb-4;
+  line-height: var(--line-height-relaxed);
+  max-width: 75ch; /* Mejora la legibilidad limitando el ancho de línea */
 }
 
+/* Enlaces con mejor accesibilidad */
 a {
-  @apply text-[var(--golden-accent)] hover:text-[var(--golden-accent-hover)] transition-colors duration-200;
+  color: var(--steel-blue-base);
+  text-decoration: underline; /* Mejor para accesibilidad */
+  text-decoration-thickness: 0.1em;
+  text-underline-offset: 0.15em;
+  @apply transition-all duration-200;
 }
 
-/* Utility Classes */
+a:hover, a:focus {
+  color: var(--steel-blue-dark);
+  text-decoration-thickness: 0.15em;
+}
+
+/* Estilos para texto seleccionado */
+::selection {
+  background-color: var(--steel-blue-light);
+  color: white;
+}
+
+/* Mejoras para formularios */
+input, textarea, select {
+  @apply border border-[var(--border-subtle)] rounded-md px-4 py-2;
+  @apply focus:outline-none focus:ring-2 focus:ring-[var(--focus-ring-color)];
+  @apply bg-white text-[var(--text-primary)];
+}
+
+button, [type="button"], [type="reset"], [type="submit"] {
+  @apply focus:outline-none focus:ring-2 focus:ring-[var(--focus-ring-color)] focus:ring-offset-2;
+}
+
+/* Utility Classes - Mejoradas para accesibilidad y consistencia */
 .container-narrow {
-  @apply max-w-3xl mx-auto px-4;
+  @apply max-w-3xl mx-auto px-4 sm:px-6;
 }
 
 .container-wide {
-  @apply max-w-6xl mx-auto px-4;
+  @apply max-w-6xl mx-auto px-4 sm:px-6;
 }
 
 .container-full {
-  @apply max-w-full mx-auto px-4;
+  @apply max-w-full mx-auto px-4 sm:px-6;
 }
 
-/* Animation Classes */
+/* Clases de texto para jerarquía tipográfica */
+.text-display {
+  @apply text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight;
+  font-family: var(--font-serif);
+}
+
+.text-heading {
+  @apply text-3xl md:text-4xl font-semibold tracking-tight;
+  font-family: var(--font-serif);
+}
+
+.text-subheading {
+  @apply text-2xl md:text-3xl font-medium;
+  font-family: var(--font-serif);
+}
+
+.text-title {
+  @apply text-xl md:text-2xl font-medium;
+}
+
+.text-subtitle {
+  @apply text-lg md:text-xl font-medium text-[var(--text-secondary)];
+}
+
+.text-body {
+  @apply text-base leading-relaxed;
+}
+
+.text-body-large {
+  @apply text-lg leading-relaxed;
+}
+
+.text-body-small {
+  @apply text-sm leading-relaxed;
+}
+
+.text-caption {
+  @apply text-sm text-[var(--text-muted)];
+}
+
+/* Clases para capitalización consistente */
+.title-case {
+  text-transform: capitalize;
+}
+
+.title-case-es::first-letter {
+  text-transform: uppercase;
+}
+
+.sentence-case {
+  text-transform: none;
+}
+
+.sentence-case::first-letter {
+  text-transform: uppercase;
+}
+
+.uppercase {
+  text-transform: uppercase;
+}
+
+.lowercase {
+  text-transform: lowercase;
+}
+
+/* Clases para accesibilidad */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+.focus-ring {
+  @apply focus:outline-none focus:ring-2 focus:ring-[var(--focus-ring-color)] focus:ring-offset-2;
+}
+
+/* Animation Classes - Optimizadas */
 .hover-lift {
-  @apply transition-all duration-300 ease-out hover:-translate-y-1 hover:shadow-lg;
+  @apply transition-transform duration-300 ease-out hover:-translate-y-1 hover:shadow-md;
 }
 
 .hover-scale {
-  @apply transition-all duration-300 ease-out hover:scale-105;
+  @apply transition-transform duration-300 ease-out hover:scale-105;
 }
 
 .hover-glow {
-  @apply transition-all duration-300 ease-out hover:shadow-[0_0_15px_rgba(212,175,55,0.3)];
+  @apply transition-shadow duration-300 ease-out hover:shadow-[0_0_15px_rgba(249,186,50,0.3)];
+}
+
+.hover-brightness {
+  @apply transition-all duration-300 ease-out hover:brightness-110;
 }
 
 .fade-in {
@@ -153,8 +380,31 @@ a {
   @apply animate-slideUp;
 }
 
+.slide-in-left {
+  @apply animate-slideInLeft;
+}
+
+.slide-in-right {
+  @apply animate-slideInRight;
+}
+
 .pulse-subtle {
   @apply animate-pulse-subtle;
+}
+
+/* Clases para reducir animaciones (accesibilidad) */
+@media (prefers-reduced-motion: reduce) {
+  .hover-lift,
+  .hover-scale,
+  .hover-glow,
+  .hover-brightness,
+  .fade-in,
+  .slide-up,
+  .slide-in-left,
+  .slide-in-right,
+  .pulse-subtle {
+    @apply transition-none transform-none animate-none;
+  }
 }
 
 /* Custom Animations */
