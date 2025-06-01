@@ -49,10 +49,10 @@ const RepresentacionIntegralPage: React.FC = () => {
         <div className="inline-flex items-center justify-center w-20 h-20 md:w-24 md:h-24 rounded-full bg-[var(--surface-subtle)] mb-6 border-2 border-[var(--golden-accent)]">
             <BriefcaseIcon className="w-10 h-10 md:w-12 md:h-12 text-[var(--golden-accent)]" />
         </div>
-        <h1 className="text-4xl sm:text-5xl font-extrabold mb-4 font-title text-[var(--sky-blue-light)]">
+        <h1 className="text-4xl sm:text-5xl font-extrabold mb-4 font-title text-[var(--coal)]">
           Representación Legal Integral
         </h1>
-        <p className="text-lg md:text-xl text-[var(--text-on-dark-soft)]/90 mb-3 max-w-2xl mx-auto">
+        <p className="text-lg md:text-xl text-[var(--coal)] mb-3 max-w-2xl mx-auto">
           Gestión completa de tu caso por nuestro equipo de abogados expertos, desde la estrategia inicial hasta la resolución.
         </p>
         <span className="inline-block px-5 py-2 bg-[var(--golden-accent)] text-[var(--deep-blue-dark)] font-bold text-md rounded-full uppercase tracking-wider">
@@ -61,12 +61,12 @@ const RepresentacionIntegralPage: React.FC = () => {
       </section>
 
       <section className="max-w-4xl mx-auto px-4 mb-12 md:mb-16">
-        <h2 className="text-2xl md:text-3xl font-semibold text-center mb-10 font-title text-[var(--text-on-dark)]">Servicio Comprensivo y Dedicado</h2>
+        <h2 className="text-2xl md:text-3xl font-bold text-center mb-10 font-title text-[var(--coal)]">Servicio Comprensivo y Dedicado</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
           {serviceIncludes.map((item, index) => (
             <Card key={index} className="p-5 flex items-start bg-[var(--surface-subtle)]/40">
               <ScaleIcon className="w-7 h-7 text-[var(--sky-blue-medium)] mr-4 mt-1 flex-shrink-0"/>
-              <p className="text-sm text-[var(--text-on-dark-soft)]/85">{item}</p>
+              <p className="text-sm text-[var(--coal)]">{item}</p>
             </Card>
           ))}
         </div>
@@ -77,8 +77,8 @@ const RepresentacionIntegralPage: React.FC = () => {
             <div className="flex flex-col md:flex-row items-center md:items-start">
                 <UsersIcon className="w-16 h-16 text-[var(--golden-accent)] mb-4 md:mb-0 md:mr-6 flex-shrink-0"/>
                 <div>
-                    <h2 className="text-2xl md:text-3xl font-semibold mb-4 font-title text-[var(--text-on-dark)]">Opciones de Personalización</h2>
-                    <ul className="list-disc list-inside text-[var(--text-on-dark-soft)]/85 space-y-2 pl-2 text-sm leading-relaxed">
+                    <h2 className="text-2xl md:text-3xl font-bold mb-4 font-title text-[var(--coal)]">Opciones de Personalización</h2>
+                    <ul className="list-disc list-inside text-[var(--coal)] space-y-2 pl-2 text-sm leading-relaxed">
                         <li>Planes de honorarios mensuales o por etapas del proceso, adaptados a la naturaleza del caso.</li>
                         <li>Definición del alcance del servicio según la complejidad y tus objetivos específicos.</li>
                         <li>Opciones de pago flexibles y transparentes discutidas desde el inicio.</li>
@@ -90,14 +90,14 @@ const RepresentacionIntegralPage: React.FC = () => {
       </section>
       
       <section className="max-w-3xl mx-auto px-4 mb-12 md:mb-16">
-        <h2 className="text-2xl md:text-3xl font-semibold text-center mb-10 font-title text-[var(--text-on-dark)]">¿Cómo Iniciamos la Representación?</h2>
+        <h2 className="text-2xl md:text-3xl font-bold text-center mb-10 font-title text-[var(--coal)]">¿Cómo Iniciamos la Representación?</h2>
         <div className="space-y-6">
           {consultationSteps.map((step, index) => (
             <div key={index} className="flex items-start p-4 bg-[var(--surface-subtle)]/30 rounded-lg border-l-4 border-[var(--golden-accent)]">
                 <div className="w-8 h-8 rounded-full bg-[var(--golden-accent)] text-[var(--deep-blue-dark)] flex items-center justify-center font-bold text-lg font-title mr-4 flex-shrink-0">
                     {index + 1}
                 </div>
-                <p className="text-[var(--text-on-dark-soft)]/90 pt-0.5">{step}</p>
+                <p className="text-[var(--coal)] pt-0.5">{step}</p>
             </div>
           ))}
         </div>
@@ -106,8 +106,8 @@ const RepresentacionIntegralPage: React.FC = () => {
       <section className="text-center px-4">
         <Card className="max-w-2xl mx-auto p-8 bg-gradient-to-br from-[var(--surface-subtle)] to-[var(--deep-blue-dark)] border border-[var(--border-subtle)]/50">
             <ChatBubbleLeftRightIcon className="w-12 h-12 text-[var(--sky-blue-light)] mx-auto mb-4"/>
-            <h2 className="text-xl md:text-2xl font-semibold text-[var(--sky-blue-light)] font-title mb-4">Agenda una Evaluación de tu Caso</h2>
-            <p className="text-[var(--text-on-dark-soft)]/85 mb-6">
+            <h2 className="text-xl md:text-2xl font-bold text-[var(--steel-blue)] font-title mb-4">Agenda una Evaluación de tu Caso</h2>
+            <p className="text-[var(--coal)] mb-6">
                 Si consideras que tu situación requiere nuestra representación legal integral, el primer paso es una evaluación detallada. Contáctanos para discutir tu caso de forma confidencial.
             </p>
             <Link to="/contact?service=Representacion Legal Integral">

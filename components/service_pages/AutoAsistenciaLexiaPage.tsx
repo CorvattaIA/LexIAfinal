@@ -51,10 +51,10 @@ const AutoAsistenciaLexiaPage: React.FC = () => {
         <div className="inline-flex items-center justify-center w-20 h-20 md:w-24 md:h-24 rounded-full bg-[var(--surface-subtle)] mb-6 border-2 border-[var(--golden-accent)]">
             <LexiaIcon className="w-10 h-10 md:w-12 md:h-12 text-[var(--golden-accent)]" />
         </div>
-        <h1 className="text-4xl sm:text-5xl font-extrabold mb-4 font-title text-[var(--sky-blue-light)]">
-          Auto-Asistencia Legal con LexIA (DIY)
+        <h1 className="text-4xl sm:text-5xl font-extrabold mb-4 font-title text-[var(--coal)]">
+          Auto-Asistencia Legal con LexIA <span className="text-[var(--steel-blue)]">(DIY)</span>
         </h1>
-        <p className="text-lg md:text-xl text-[var(--text-on-dark-soft)]/90 mb-3 max-w-2xl mx-auto">
+        <p className="text-lg md:text-xl text-[var(--coal)] mb-3 max-w-2xl mx-auto">
           Empodérate con herramientas de IA para resolver asuntos legales sencillos y generar documentos básicos.
         </p>
         <span className="inline-block px-5 py-2 bg-[var(--golden-accent)] text-[var(--deep-blue-dark)] font-bold text-md rounded-full uppercase tracking-wider">
@@ -63,49 +63,49 @@ const AutoAsistenciaLexiaPage: React.FC = () => {
       </section>
 
       <section className="max-w-4xl mx-auto px-4 mb-12 md:mb-16">
-        <h2 className="text-2xl md:text-3xl font-semibold text-center mb-10 font-title text-[var(--text-on-dark)]">¿Qué Incluye este Servicio?</h2>
+        <h2 className="text-2xl md:text-3xl font-bold text-center mb-10 font-title text-[var(--coal)]">¿Qué Incluye este Servicio?</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
           <Card className="p-6">
             <ChatBubbleIcon className="w-10 h-10 text-[var(--golden-accent)] mb-3"/>
-            <h3 className="text-xl font-semibold text-[var(--sky-blue-light)] font-title mb-2">Chat con LexIA Especializado</h3>
-            <p className="text-sm text-[var(--text-on-dark-soft)]/85">
+            <h3 className="text-xl font-bold text-[var(--steel-blue)] font-title mb-2">Chat con LexIA Especializado</h3>
+            <p className="text-sm text-[var(--coal)]">
               {determinedArea ? `Conversa con nuestra IA legal, LexIA, pre-configurada para tu área de interés: ${determinedArea.name}. ` : "Conversa con nuestra IA legal, LexIA. "}
               Obtén un diagnóstico más detallado, explicaciones de términos legales y orientación sobre tus próximos pasos.
             </p>
           </Card>
           <Card className="p-6">
             <DocumentIcon className="w-10 h-10 text-[var(--golden-accent)] mb-3"/>
-            <h3 className="text-xl font-semibold text-[var(--sky-blue-light)] font-title mb-2">Generación de Documentos Básicos</h3>
-            <p className="text-sm text-[var(--text-on-dark-soft)]/85">
+            <h3 className="text-xl font-bold text-[var(--steel-blue)] font-title mb-2">Generación de Documentos Básicos</h3>
+            <p className="text-sm text-[var(--coal)]">
               LexIA puede ayudarte a redactar borradores de documentos comunes como derechos de petición, reclamaciones de baja complejidad, o cartas formales, personalizándolos según tu información.
             </p>
           </Card>
         </div>
-        <p className="text-center text-sm text-[var(--text-on-dark-soft)]/70 mt-8">
+        <p className="text-center text-sm text-[var(--coal)] mt-8">
             * La generación de documentos y el chat especializado con LexIA suelen estar vinculados tras el <Link to="/diagnostico-inicial" className="text-[var(--golden-accent)] hover:underline">diagnóstico inicial</Link> para un mejor contexto.
         </p>
       </section>
 
       <section className="max-w-4xl mx-auto px-4 mb-12 md:mb-16">
-        <h2 className="text-2xl md:text-3xl font-semibold text-center mb-10 font-title text-[var(--text-on-dark)]">Tipos de Documentos que Puedes Explorar (Ejemplos)</h2>
+        <h2 className="text-2xl md:text-3xl font-bold text-center mb-10 font-title text-[var(--coal)]">Tipos de Documentos que Puedes Explorar (Ejemplos)</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
           {["Derechos de Petición", "Reclamaciones Simples", "Cartas Formales", "Contratos (Simulador Básico)"].map(docType => (
             <Card key={docType} className="p-5 text-center hover:border-[var(--sky-blue-medium)] transition-colors">
               <DocumentIcon className="w-8 h-8 text-[var(--sky-blue-medium)] mx-auto mb-3"/>
-              <h4 className="text-md font-semibold text-[var(--text-on-dark-soft)] font-title">{docType}</h4>
+              <h4 className="text-md font-bold text-[var(--coal)] font-title">{docType}</h4>
               {docType.includes("Simulador") && <p className="text-xs text-[var(--golden-accent)]/80">(Funcionalidad en desarrollo/simplificada)</p>}
             </Card>
           ))}
         </div>
-         <p className="text-center text-sm text-[var(--text-on-dark-soft)]/70 mt-8">
+         <p className="text-center text-sm text-[var(--coal)] mt-8">
             La capacidad de generación de documentos específicos se activa y personaliza a través de la interacción con LexIA.
         </p>
       </section>
       
       <section className="text-center px-4 mb-12 md:mb-16">
         <Card className="max-w-2xl mx-auto p-8 bg-[var(--surface-subtle)]/70 border border-[var(--border-subtle)]/50">
-            <h3 className="text-xl md:text-2xl font-semibold text-[var(--sky-blue-light)] font-title mb-3">¿Necesitas un Análisis Más Profundo?</h3>
-            <p className="text-[var(--text-on-dark-soft)]/85 mb-6">
+            <h3 className="text-xl md:text-2xl font-bold text-[var(--steel-blue)] font-title mb-3">¿Necesitas un Análisis Más Profundo?</h3>
+            <p className="text-[var(--coal)] mb-6">
                 La Auto-Asistencia es ideal para orientarte y resolver asuntos sencillos. Si tu caso requiere un análisis de riesgos, estudio de jurisprudencia validado o una estrategia más compleja, considera nuestro Reporte Estratégico Híbrido.
             </p>
             <Link to="/reporte-estrategico">
@@ -115,8 +115,8 @@ const AutoAsistenciaLexiaPage: React.FC = () => {
       </section>
 
       <section className="text-center px-4">
-        <h2 className="text-2xl md:text-3xl font-semibold mb-6 font-title text-[var(--text-on-dark)]">Contratar Auto-Asistencia Legal</h2>
-        <p className="text-[var(--text-on-dark-soft)]/80 mb-8 max-w-xl mx-auto">
+        <h2 className="text-2xl md:text-3xl font-bold mb-6 font-title text-[var(--coal)]">Contratar Auto-Asistencia Legal</h2>
+        <p className="text-[var(--coal)] mb-8 max-w-xl mx-auto">
             Para acceder a LexIA y las herramientas de auto-asistencia, te recomendamos primero completar nuestro <Link to="/diagnostico-inicial" className="text-[var(--golden-accent)] hover:underline">diagnóstico gratuito</Link>. Esto nos permite contextualizar mejor tu consulta.
         </p>
         <Button 
@@ -127,7 +127,7 @@ const AutoAsistenciaLexiaPage: React.FC = () => {
         >
           {serviceInfo?.id === 'lexia_premium_chat' ? "Acceder a LexIA (vía diagnóstico)" : "Consultar sobre Auto-Asistencia"}
         </Button>
-        <p className="text-xs text-[var(--text-on-dark-soft)]/60 mt-3">
+        <p className="text-xs text-[var(--coal)] mt-3">
             {serviceInfo?.id === 'lexia_premium_chat' ? "Se requiere completar el diagnóstico para activar la sesión de pago." : "Acceso y precios varían según complejidad."}
         </p>
       </section>

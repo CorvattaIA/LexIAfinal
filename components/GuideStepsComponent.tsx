@@ -11,21 +11,21 @@ interface AccordionItemProps {
 
 const AccordionItem: React.FC<AccordionItemProps> = ({ title, children, isOpen, onClick }) => {
   return (
-    <Card className="mb-4 p-0 overflow-hidden border border-[var(--border-subtle)]/40">
+    <Card className="mb-4 p-0 overflow-hidden border border-[var(--steel-blue)]/20">
       <button
         onClick={onClick}
-        className="w-full flex justify-between items-center text-left p-4 md:p-5 bg-[var(--surface-subtle)] hover:bg-[var(--surface-subtle)]/70 transition-colors"
+        className="w-full flex justify-between items-center text-left p-4 md:p-5 bg-[var(--bone)] hover:bg-[var(--steel-blue)]/5 transition-colors"
         aria-expanded={isOpen}
       >
-        <span className="text-lg font-semibold text-[var(--text-on-dark)] font-title">{title}</span>
-        <span className={`transform transition-transform duration-300 text-2xl text-[var(--golden-accent)] ${isOpen ? 'rotate-45' : 'rotate-0'}`}>
+        <span className="text-lg font-bold text-[var(--coal)] font-title">{title}</span>
+        <span className={`transform transition-transform duration-300 text-2xl text-[var(--sunshine)] ${isOpen ? 'rotate-45' : 'rotate-0'}`}>
           +
         </span>
       </button>
       <div 
         className={`overflow-hidden transition-all duration-500 ease-in-out ${isOpen ? 'max-h-[1000px] opacity-100' : 'max-h-0 opacity-0'}`}
       >
-        <div className="p-4 md:p-6 text-sm text-[var(--text-on-dark-soft)]/85 border-t border-[var(--border-subtle)]/30 space-y-2 leading-relaxed">
+        <div className="p-4 md:p-6 text-sm text-[var(--coal)] border-t border-[var(--steel-blue)]/20 space-y-2 leading-relaxed">
           {children}
         </div>
       </div>
@@ -35,7 +35,7 @@ const AccordionItem: React.FC<AccordionItemProps> = ({ title, children, isOpen, 
 
 const guideStepsData = [
   {
-    title: "1. Comenzando con el Diagnóstico",
+    title: "1. Comenzando con el diagnóstico",
     content: [
       "Regístrate en nuestra plataforma de forma rápida y segura.",
       "Selecciona el área legal general que se ajusta a tu consulta.",
@@ -44,7 +44,7 @@ const guideStepsData = [
     ]
   },
   {
-    title: "2. Utilizando LexIA DIY (Auto-Asistencia)",
+    title: "2. Utilizando LexIA  (auto-asistencia)",
     content: [
       "Si tu caso es apto para auto-gestión, puedes acceder a LexIA, nuestro chat con IA especializada (costo aplicable).",
       "Interactúa con LexIA para profundizar en tu diagnóstico, hacer preguntas y recibir explicaciones claras sobre términos legales.",
@@ -53,9 +53,9 @@ const guideStepsData = [
     ]
   },
   {
-    title: "3. Maximizando el Reporte Estratégico Híbrido",
+    title: "3. Maximizando el reporte estratégico híbrido",
     content: [
-      "Para un análisis más profundo, solicita un Reporte Estratégico (costo aplicable).",
+      "Para un análisis más profundo, solicita un reporte estratégico (costo aplicable).",
       "Proporciona toda la información relevante de tu caso. Cuantos más detalles, más preciso será el análisis de la IA.",
       "Nuestra IA procesará la información, cruzándola con legislación y jurisprudencia actualizada.",
       "Un abogado especialista revisará y validará el reporte generado por la IA, añadiendo su pericia y criterio profesional.",
@@ -63,7 +63,7 @@ const guideStepsData = [
     ]
   },
   {
-    title: "4. Preparándote para la Consulta con Abogado",
+    title: "4. Preparándote para la consulta con abogado",
     content: [
       "Si necesitas intervención directa, agenda una consulta con uno de nuestros abogados especialistas (costo aplicable).",
       "Elige el paquete que mejor se adapte (ej. revisión de documentos, consulta de 45 minutos).",
@@ -72,9 +72,9 @@ const guideStepsData = [
     ]
   },
   {
-    title: "5. Gestionando tu Representación Integral",
+    title: "5. Gestionando tu representación integral",
     content: [
-      "Para casos que requieren gestión completa, ofrecemos Representación Legal Integral (presupuesto personalizado).",
+      "Para casos que requieren gestión completa, ofrecemos representación legal integral (presupuesto personalizado).",
       "Tras una evaluación detallada, te presentaremos una propuesta de representación y asignaremos un equipo legal.",
       "Mantendremos una comunicación fluida y te proporcionaremos reportes mensuales sobre el avance de tu caso.",
       "Nuestro equipo se encargará de toda la documentación, estrategia y representación ante las instancias necesarias.",

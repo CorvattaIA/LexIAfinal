@@ -25,7 +25,7 @@ const App: React.FC = () => {
   const [currentUser, setCurrentUser] = React.useState<RegisteredUser | null>(null);
 
   return (
-    <div className="min-h-screen flex flex-col bg-[var(--deep-blue-dark)] text-[var(--text-on-dark)]">
+    <div className="min-h-screen flex flex-col bg-[var(--bone)] text-[var(--coal)]">
       <Navbar />
       <main className="flex-grow container mx-auto px-4 py-8 page-enter">
         <Routes location={location} key={location.pathname}>
@@ -55,10 +55,10 @@ const App: React.FC = () => {
           <Route path="/data-policy" element={<DataPolicyPage />} />
         </Routes>
       </main>
-      <footer className="bg-[var(--surface-subtle)] text-[var(--text-on-dark-soft)]/80 text-center p-6 shadow-inner mt-auto border-t border-[var(--border-subtle)]/50">
+      <footer className="bg-[var(--steel-blue)] text-white text-center p-6 shadow-inner mt-auto border-t border-[var(--coal)]/10">
         <p className="text-sm mb-1">{FOOTER_TEXT}</p>
         <p className="text-xs">
-          <Link to="/data-policy" className="underline hover:text-[var(--golden-accent)] transition-colors">
+          <Link to="/data-policy" className="underline hover:text-[var(--sunshine)] transition-colors">
             Política de Tratamiento de Datos
           </Link>
         </p>

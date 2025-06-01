@@ -1,0 +1,19 @@
+/* Estilos de capitalización según normas del español */
+
+/* Title case en español: solo primera palabra con mayúscula inicial */
+.title-case-es {
+  text-transform: lowercase;
+}
+.title-case-es::first-letter {
+  text-transform: uppercase;
+}
+
+/* Sentence case: mantiene la capitalización original del texto */
+.sentence-case-es {
+  text-transform: none;
+}
+
+/* Nombres propios y términos especiales que siempre llevan mayúscula inicial */
+.proper-noun {
+  text-transform: capitalize;
+}

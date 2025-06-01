@@ -1,0 +1,405 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  /* Nueva Paleta de Colores */
+  --bone: #F8F1E5;
+  --steel-blue: #426E86;
+  --sunshine: #F9BA32;
+  --coal: #2F3131;
+  
+  /* Variaciones de colores principales */
+  --steel-blue-light: #5a8ca6;
+  --steel-blue-dark: #355a6e;
+  --sunshine-light: #fac858;
+  --sunshine-dark: #e6a618;
+  --bone-dark: #e8e1d5;
+  
+  /* Mantener colores anteriores para compatibilidad */
+  --deep-blue-dark: #0d1b2a;
+  --deep-blue-medium: #1b263b;
+  --deep-blue-light: #2c3e50;
+  --golden-accent: var(--sunshine);
+  --golden-accent-hover: var(--sunshine-light);
+  --golden-accent-active: var(--sunshine-dark);
+  --teal-accent: #2a9d8f;
+  --teal-accent-hover: #3ab7a7;
+  --teal-accent-active: #218a7e;
+  
+  /* Neón Accents - Usados con moderación */
+  --neon-cyan: #00ffff;
+  --neon-magenta: #ff00ff;
+  --neon-lime: #ccff00;
+  --neon-blue: var(--steel-blue-light);
+  --neon-purple: #bc13fe;
+
+  /* Surface Colors - Actualizados */
+  --surface-background: var(--bone);
+  --surface-elevated: #FFFFFF;
+  --surface-subtle: var(--bone-dark);
+  --surface-hover: rgba(66, 110, 134, 0.05);
+  --surface-active: rgba(66, 110, 134, 0.1);
+
+  /* Text Colors - Actualizados */
+  --text-primary: var(--coal);
+  --text-secondary: var(--steel-blue);
+  --text-on-dark: #FFFFFF;
+  --text-on-dark-soft: rgba(255, 255, 255, 0.85);
+  --text-on-accent: var(--coal);
+  --text-muted: rgba(47, 49, 49, 0.6);
+
+  /* Border Colors */
+  --border-subtle: rgba(47, 49, 49, 0.1);
+  --border-accent: var(--sunshine);
+
+  /* Status Colors */
+  --success: #22c55e;
+  --warning: #f59e0b;
+  --error: #ef4444;
+  --info: #3b82f6;
+
+  /* Spacing System */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-6: 1.5rem;
+  --space-8: 2rem;
+  --space-12: 3rem;
+  --space-16: 4rem;
+  --space-24: 6rem;
+
+  /* Typography */
+  --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+  --font-serif: 'Playfair Display', Georgia, serif;
+  --font-mono: 'JetBrains Mono', monospace;
+}
+
+/* Base Styles */
+body {
+  @apply bg-[var(--surface-background)] text-[var(--text-primary)];
+  font-family: var(--font-sans);
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-serif);
+  @apply font-semibold tracking-tight;
+}
+
+h1 {
+  @apply text-4xl md:text-5xl mb-6;
+}
+
+h2 {
+  @apply text-3xl md:text-4xl mb-5;
+}
+
+h3 {
+  @apply text-2xl md:text-3xl mb-4;
+}
+
+h4 {
+  @apply text-xl md:text-2xl mb-3;
+}
+
+h5 {
+  @apply text-lg md:text-xl mb-2;
+}
+
+h6 {
+  @apply text-base md:text-lg mb-2;
+}
+
+p {
+  @apply mb-4 leading-relaxed;
+}
+
+a {
+  @apply text-[var(--golden-accent)] hover:text-[var(--golden-accent-hover)] transition-colors duration-200;
+}
+
+/* Utility Classes */
+.container-narrow {
+  @apply max-w-3xl mx-auto px-4;
+}
+
+.container-wide {
+  @apply max-w-6xl mx-auto px-4;
+}
+
+.container-full {
+  @apply max-w-full mx-auto px-4;
+}
+
+/* Animation Classes */
+.hover-lift {
+  @apply transition-all duration-300 ease-out hover:-translate-y-1 hover:shadow-lg;
+}
+
+.hover-scale {
+  @apply transition-all duration-300 ease-out hover:scale-105;
+}
+
+.hover-glow {
+  @apply transition-all duration-300 ease-out hover:shadow-[0_0_15px_rgba(212,175,55,0.3)];
+}
+
+.fade-in {
+  @apply animate-fadeIn;
+}
+
+.slide-up {
+  @apply animate-slideUp;
+}
+
+.pulse-subtle {
+  @apply animate-pulse-subtle;
+}
+
+/* Custom Animations */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from { transform: translateY(20px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+@keyframes slideInLeft {
+  from { transform: translateX(-30px); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}
+
+@keyframes slideInRight {
+  from { transform: translateX(30px); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}
+
+@keyframes pulseSubtle {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.85; }
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+@keyframes breathe {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+}
+
+@keyframes neonPulse {
+  0%, 100% { 
+    box-shadow: 0 0 5px rgba(0, 255, 255, 0.3),
+               0 0 10px rgba(0, 255, 255, 0.2),
+               0 0 15px rgba(0, 255, 255, 0.1);
+  }
+  50% { 
+    box-shadow: 0 0 10px rgba(0, 255, 255, 0.5),
+               0 0 20px rgba(0, 255, 255, 0.3),
+               0 0 30px rgba(0, 255, 255, 0.2);
+  }
+}
+
+@keyframes borderGlow {
+  0%, 100% { 
+    border-color: var(--golden-accent);
+  }
+  50% { 
+    border-color: var(--neon-cyan);
+  }
+}
+
+@layer utilities {
+  /* Animaciones básicas */
+  .animate-fadeIn {
+    animation: fadeIn 0.3s ease-out forwards;
+  }
+
+  .animate-slideUp {
+    animation: slideUp 0.4s ease-out forwards;
+  }
+  
+  .animate-slideInLeft {
+    animation: slideInLeft 0.5s ease-out forwards;
+  }
+  
+  .animate-slideInRight {
+    animation: slideInRight 0.5s ease-out forwards;
+  }
+  
+  .animate-pulse-subtle {
+    animation: pulseSubtle 2s ease-in-out infinite;
+  }
+  
+  .animate-shimmer {
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+    background-size: 200% 100%;
+    animation: shimmer 2s infinite;
+  }
+  
+  .animate-float {
+    animation: float 4s ease-in-out infinite;
+  }
+  
+  .animate-breathe {
+    animation: breathe 4s ease-in-out infinite;
+  }
+  
+  /* Utilidades para animaciones en scroll */
+  .reveal-on-scroll {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+  }
+  
+  .reveal-on-scroll.revealed {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  
+  /* Efectos neón (usar con moderación) */
+  .neon-text-cyan {
+    color: var(--neon-cyan);
+    text-shadow: 0 0 5px rgba(0, 255, 255, 0.5),
+                0 0 10px rgba(0, 255, 255, 0.3);
+  }
+  
+  .neon-text-magenta {
+    color: var(--neon-magenta);
+    text-shadow: 0 0 5px rgba(255, 0, 255, 0.5),
+                0 0 10px rgba(255, 0, 255, 0.3);
+  }
+  
+  .neon-border {
+    border: 1px solid transparent;
+    border-radius: 0.25rem;
+    transition: all 0.3s ease;
+  }
+  
+  .neon-border:hover {
+    border-color: var(--neon-cyan);
+    box-shadow: 0 0 5px rgba(0, 255, 255, 0.5),
+               0 0 10px rgba(0, 255, 255, 0.3);
+  }
+  
+  .neon-glow-hover {
+    transition: all 0.3s ease;
+  }
+  
+  .neon-glow-hover:hover {
+    box-shadow: 0 0 5px rgba(0, 255, 255, 0.5),
+               0 0 10px rgba(0, 255, 255, 0.3),
+               0 0 15px rgba(0, 255, 255, 0.1);
+  }
+  
+  .neon-pulse {
+    animation: neonPulse 2s ease-in-out infinite;
+  }
+  
+  .border-glow {
+    animation: borderGlow 3s ease-in-out infinite;
+  }
+  
+  /* Transiciones mejoradas */
+  .transition-smooth {
+    transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+  }
+  
+  .transition-bounce {
+    transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+  
+  .hover-lift-3d {
+    transition: all 0.3s ease;
+  }
+  
+  .hover-lift-3d:hover {
+    transform: translateY(-5px) scale(1.02);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+  }
+  
+  /* Utilidades para tipografía */
+  /* 
+   * Title Case: Mayúscula en la primera letra de cada palabra principal
+   * Se usa para: Encabezados principales (h1, h2), elementos de navegación, botones
+   */
+  .title-case {
+    text-transform: capitalize;
+  }
+  
+  /* 
+   * Sentence Case: Mayúscula solo en la primera letra de la oración
+   * Se usa para: Sub-encabezados (h3, h4), párrafos, descripciones, etiquetas
+   */
+  .sentence-case {
+    text-transform: lowercase;
+  }
+  
+  .sentence-case:first-letter {
+    text-transform: uppercase;
+  }
+  
+  /* 
+   * Uppercase: Todo en mayúsculas (uso limitado)
+   * Se usa para: Elementos de énfasis especial, etiquetas cortas
+   */
+  .uppercase {
+    text-transform: uppercase;
+  }
+}
+
+/* Form Elements */
+input, textarea, select {
+  @apply bg-[var(--deep-blue-medium)] border border-[var(--border-subtle)] rounded-lg px-4 py-2 text-[var(--text-primary)] focus:outline-none focus:ring-2 focus:ring-[var(--golden-accent)] focus:border-transparent transition-all duration-200;
+}
+
+input::placeholder, textarea::placeholder {
+  @apply text-[var(--text-muted)];
+}
+
+/* Estilos para botones con efectos mejorados */
+.btn {
+  @apply relative overflow-hidden transition-all duration-300 ease-out;
+}
+
+.btn::after {
+  content: '';
+  @apply absolute inset-0 opacity-0 transition-opacity duration-300 ease-out;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+  transform: translateX(-100%);
+}
+
+.btn:hover::after {
+  @apply opacity-100;
+  transform: translateX(100%);
+  transition: transform 0.8s ease-out, opacity 0.3s ease-out;
+}
+
+/* Scrollbar Styling */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-[var(--deep-blue-medium)];
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-[var(--deep-blue-light)] rounded-full;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-[var(--golden-accent)];
+}
