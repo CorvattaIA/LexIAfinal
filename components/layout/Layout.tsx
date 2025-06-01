@@ -1,20 +1,28 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { initScrollAnimations, applyNeonPulseEffect } from '../../utils/animationUtils';
+import Typography from '../ui/Typography';
 
 interface LayoutProps {
   children: React.ReactNode;
   className?: string;
   pageTransition?: boolean;
   id?: string;
+  title?: string;
+  description?: string;
+  skipToContentId?: string;
 }
 
 const Layout: React.FC<LayoutProps> = ({ 
   children, 
   className = '',
   pageTransition = true,
-  id = 'main-layout'
+  id = 'main-layout',
+  title,
+  description,
+  skipToContentId = 'main-content'
 }) => {
+  const mainContentRef = useRef<HTMLDivElement>(null);
   // Efecto para scroll suave al inicio y activación de animaciones sofisticadas
   useEffect(() => {
     // Scroll suave al inicio cuando se carga la página
@@ -82,6 +90,17 @@ const Layout: React.FC<LayoutProps> = ({
 
   return (
     <div className={`min-h-screen flex flex-col bg-[var(--bone)] text-[var(--coal)] ${className}`} id={id}>
+      {/* Enlace de salto de navegación para accesibilidad */}
+      <a 
+        href={`#${skipToContentId}`} 
+        className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-[var(--steel-blue)] focus:text-white focus:rounded-md focus:shadow-lg focus:outline-none"
+        aria-label="Saltar al contenido principal"
+      >
+        <Typography variant="body-small" color="white">
+          Saltar al contenido principal
+        </Typography>
+      </a>
+
       <AnimatePresence mode="wait">
         <motion.main 
           className="flex-grow relative"
@@ -90,9 +109,25 @@ const Layout: React.FC<LayoutProps> = ({
           exit={pageTransition ? "exit" : undefined}
           variants={pageVariants}
           key={id}
+          ref={mainContentRef}
+          id={skipToContentId}
+          tabIndex={-1}
+          aria-labelledby={title ? 'page-title' : undefined}
+          aria-describedby={description ? 'page-description' : undefined}
         >
           {/* Overlay de gradiente sutil para transiciones */}
-          <div className="pointer-events-none fixed inset-0 z-[-1] bg-gradient-to-b from-[var(--bone-dark)]/30 to-transparent opacity-0 transition-opacity duration-700 ease-in-out" />
+          <div 
+            className="pointer-events-none fixed inset-0 z-[-1] bg-gradient-to-b from-[var(--bone-dark)]/30 to-transparent opacity-0 transition-opacity duration-700 ease-in-out" 
+            aria-hidden="true"
+          />
+          
+          {/* Título y descripción ocultos para lectores de pantalla */}
+          {title && (
+            <h1 id="page-title" className="sr-only">{title}</h1>
+          )}
+          {description && (
+            <p id="page-description" className="sr-only">{description}</p>
+          )}
           
           {/* Contenido principal con animaciones escalonadas */}
           <motion.div className="h-full w-full">

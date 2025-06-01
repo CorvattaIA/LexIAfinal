@@ -1,8 +1,9 @@
-
-import { useState } from 'react';
+import { useState, useRef, useEffect, KeyboardEvent } from 'react';
 import { Link } from 'react-router-dom';
+import { motion, AnimatePresence, useReducedMotion, PanInfo } from 'framer-motion';
 import Card from './ui/Card';
 import Button from './ui/Button';
+import Typography from './ui/Typography';
 import { 
   DiagnosticoIcon, 
   AutoAsistenciaIcon, 
@@ -13,51 +14,76 @@ import {
   ElegantArrowIcon
 } from './icons/ServiceIcons';
 
-// Componente de número de etapa moderno y atractivo
-const StageNumber = ({ number, isActive }: { number: number; isActive: boolean }) => (
+// Componente de número de etapa con mejoras de accesibilidad
+const StageNumber = ({ number, isActive, reduceMotion }: { number: number; isActive: boolean; reduceMotion: boolean }) => (
   <div 
-    className={`w-12 h-12 rounded-full flex items-center justify-center font-bold text-lg
+    className={`w-10 h-10 md:w-12 md:h-12 rounded-full flex items-center justify-center font-bold text-lg
       ${isActive 
-        ? 'bg-gradient-to-r from-[var(--steel-blue)] to-[var(--steel-blue-light)] text-white shadow-md ring-2 ring-[var(--steel-blue)]/30 ring-offset-2 ring-offset-[var(--bone)]' 
-        : 'bg-white text-[var(--coal)] border border-[var(--steel-blue)]/30 hover:border-[var(--sunshine)] hover:text-[var(--steel-blue)] hover:shadow-md'}
-      transition-all duration-300 transform hover:scale-105`}
+        ? 'bg-gradient-to-r from-[#426E86] to-[#426E86]/80 text-white shadow-md ring-2 ring-[#426E86]/30 ring-offset-2 ring-offset-[#F8F1E5]' 
+        : 'bg-[#F8F1E5] text-[#2F3131] border border-[#426E86]/30 hover:border-[#F9BA32] hover:text-[#426E86] hover:shadow-md'}
+      ${reduceMotion ? 'transition-colors' : 'transition-all duration-300 transform hover:scale-105'}`}
+    role="presentation"
+    aria-hidden="true"
   >
-    {number}
+    <Typography 
+      variant="body" 
+      weight="bold" 
+      color={isActive ? 'white' : '#2F3131'}
+      as="span"
+    >
+      {number}
+    </Typography>
   </div>
 );
 
-// Función para obtener el icono correspondiente a cada etapa con efectos mejorados
-const getStageIcon = (stage: number, isActive: boolean) => {
-  // Clases base mejoradas con efectos de hover y transiciones
+// Función para obtener el icono correspondiente a cada etapa
+const getStageIcon = (stage: number, isActive: boolean, reduceMotion: boolean) => {
+  // Clases base con efectos de hover y transiciones
   const baseClass = `w-8 h-8 md:w-10 md:h-10 ${isActive 
-    ? 'text-[var(--steel-blue)] filter drop-shadow-sm' 
-    : 'text-[var(--coal)] hover:text-[var(--steel-blue)] hover:filter hover:drop-shadow-sm'} 
-    transition-all duration-300 transform hover:scale-110`;
+    ? 'text-[#426E86] filter drop-shadow-sm' 
+    : 'text-[#2F3131] hover:text-[#426E86] hover:filter hover:drop-shadow-sm'} 
+    ${reduceMotion ? 'transition-colors' : 'transition-all duration-300 transform hover:scale-110'}`;
   
-  // Colores específicos para cada etapa para mayor distinción visual
+  // Colores específicos para cada etapa
   const stageColors = {
-    1: isActive ? 'text-[var(--steel-blue)]' : 'hover:text-[var(--steel-blue)]',
-    2: isActive ? 'text-[var(--steel-blue)]' : 'hover:text-[var(--steel-blue)]',
-    3: isActive ? 'text-[var(--steel-blue)]' : 'hover:text-[var(--steel-blue)]',
-    4: isActive ? 'text-[var(--steel-blue)]' : 'hover:text-[var(--steel-blue)]',
-    5: isActive ? 'text-[var(--sunshine)]' : 'hover:text-[var(--sunshine)]',
+    1: isActive ? 'text-[#426E86]' : 'hover:text-[#426E86]',
+    2: isActive ? 'text-[#426E86]' : 'hover:text-[#426E86]',
+    3: isActive ? 'text-[#426E86]' : 'hover:text-[#426E86]',
+    4: isActive ? 'text-[#426E86]' : 'hover:text-[#426E86]',
+    5: isActive ? 'text-[#F9BA32]' : 'hover:text-[#F9BA32]',
   };
   
   // Clase combinada con color específico de la etapa
   const combinedClass = `${baseClass} ${stageColors[stage as keyof typeof stageColors]}`;
   
+  // Nombres descriptivos para cada icono para accesibilidad
+  const iconLabels = {
+    1: "Diagnóstico",
+    2: "Auto-Asistencia",
+    3: "Reporte Estratégico",
+    4: "Intervención Especializada",
+    5: "Representación Integral"
+  };
+  
+  // Atributos ARIA para accesibilidad
+  const ariaProps = {
+    role: "img",
+    "aria-label": iconLabels[stage as keyof typeof iconLabels],
+  };
+  
   switch(stage) {
-    case 1: return <DiagnosticoIcon className={combinedClass} />;
-    case 2: return <AutoAsistenciaIcon className={combinedClass} />;
-    case 3: return <ReporteEstrategicoIcon className={combinedClass} />;
-    case 4: return <IntervencionEspecializadaIcon className={combinedClass} />;
-    case 5: return <RepresentacionIntegralIcon className={combinedClass} />;
+    case 1: return <DiagnosticoIcon className={combinedClass} {...ariaProps} />;
+    case 2: return <AutoAsistenciaIcon className={combinedClass} {...ariaProps} />;
+    case 3: return <ReporteEstrategicoIcon className={combinedClass} {...ariaProps} />;
+    case 4: return <IntervencionEspecializadaIcon className={combinedClass} {...ariaProps} />;
+    case 5: return <RepresentacionIntegralIcon className={combinedClass} {...ariaProps} />;
     default: return null;
   }
 };
 
+// Interfaz para los datos de cada etapa
 interface Stage {
-  id: string;
+  id: number;
   number: number;
   title: string;
   shortTitle: string;
@@ -69,273 +95,562 @@ interface Stage {
   color: string;
 }
 
+// Datos de las etapas de servicio
 const stagesData: Stage[] = [
-  { 
-    id: 's1', 
-    number: 1, 
-    title: "Test diagnóstico inicial automático", 
-    shortTitle: "Diagnóstico IA",
-    description: "Evaluación inicial automatizada de tu caso legal", 
+  {
+    id: 1,
+    number: 1,
+    title: "Diagnóstico Inicial",
+    shortTitle: "Diagnóstico",
+    description: "Evaluación preliminar de tu caso para determinar la mejor estrategia legal. Incluye análisis de documentación y consulta virtual con un abogado especializado.",
     features: [
-      "Análisis preliminar de tu situación legal",
-      "Identificación del área legal aplicable",
-      "Orientación sobre posibles vías de acción"
+      "Evaluación de documentos legales",
+      "Consulta virtual de 30 minutos",
+      "Identificación de riesgos legales",
+      "Recomendaciones iniciales"
     ],
-    price: "Gratis con registro", 
-    buttonText: "Comenzar diagnóstico", 
+    price: "Desde $99",
+    buttonText: "Solicitar Diagnóstico",
     linkTo: "/diagnostico-inicial",
-    color: "var(--steel-blue)"
+    color: "#426E86" // Steel Blue (color primario)
   },
-  { 
-    id: 's2', 
-    number: 2, 
-    title: "Auto-Asistencia Legal (LexIA )", 
+  {
+    id: 2,
+    number: 2,
+    title: "Auto-Asistencia Guiada",
     shortTitle: "Auto-Asistencia",
-    description: "Interacción con nuestra IA legal especializada", 
+    description: "Acceso a herramientas y recursos para gestionar aspectos legales básicos por tu cuenta, con soporte de IA y supervisión legal cuando lo necesites.",
     features: [
-      "Chat ilimitado con LexIA para consultas legales",
-      "Generación de documentos legales básicos",
-      "Acceso a recursos legales relevantes"
+      "Plantillas personalizables",
+      "Asistente IA para documentos",
+      "Revisión legal básica",
+      "Recursos educativos"
     ],
-    price: "Desde 45.000 COP", 
-    buttonText: "Explorar opciones", 
-    linkTo: "/auto-asistencia-lexia",
-    color: "var(--steel-blue)"
+    price: "Desde $149",
+    buttonText: "Acceder a Herramientas",
+    linkTo: "/auto-asistencia",
+    color: "#426E86" // Steel Blue (color primario)
   },
-  { 
-    id: 's3', 
-    number: 3, 
-    title: "Reporte Estratégico Híbrido", 
-    shortTitle: "Reporte Estratégico",
-    description: "Análisis detallado validado por expertos legales", 
+  {
+    id: 3,
+    number: 3,
+    title: "Reporte Estratégico",
+    shortTitle: "Reporte",
+    description: "Análisis detallado de tu situación legal con estrategias recomendadas, riesgos identificados y plan de acción personalizado.",
     features: [
-      "Análisis profundo de tu caso por IA avanzada",
-      "Revisión y validación por abogados especialistas",
-      "Reporte PDF con estrategias y recomendaciones"
+      "Análisis legal exhaustivo",
+      "Estrategias recomendadas",
+      "Evaluación de riesgos",
+      "Plan de acción detallado"
     ],
-    price: "Desde 120.000 COP", 
-    buttonText: "Solicitar reporte", 
+    price: "Desde $299",
+    buttonText: "Solicitar Reporte",
     linkTo: "/reporte-estrategico",
-    color: "var(--steel-blue)"
+    color: "#426E86" // Steel Blue (color primario)
   },
-  { 
-    id: 's4', 
-    number: 4, 
-    title: "Intervención especializada", 
-    shortTitle: "Consulta specializada",
-    description: "Asesoramiento directo con abogados expertos", 
+  {
+    id: 4,
+    number: 4,
+    title: "Intervención Especializada",
+    shortTitle: "Intervención",
+    description: "Asistencia legal directa para situaciones complejas que requieren la intervención de un abogado especializado, sin necesidad de representación completa.",
     features: [
-      "Videoconsulta personalizada con especialista",
-      "Revisión de documentos y evidencias",
-      "Plan de acción específico para tu caso"
+      "Representación en gestiones específicas",
+      "Negociación con terceros",
+      "Redacción de documentos complejos",
+      "Asesoría legal continua"
     ],
-    price: "Desde 90.000 COP", 
-    buttonText: "Ver paquetes", 
-    linkTo: "/Intervencion-especializada",
-    color: "var(--steel-blue)"
+    price: "Desde $499",
+    buttonText: "Consultar Intervención",
+    linkTo: "/intervencion-especializada",
+    color: "#426E86" // Steel Blue (color primario)
   },
-  { 
-    id: 's5', 
-    number: 5, 
-    title: "Representación integral", 
-    shortTitle: "Representación legal",
-    description: "Gestión completa de tu caso por nuestro equipo legal", 
+  {
+    id: 5,
+    number: 5,
+    title: "Representación Integral",
+    shortTitle: "Representación",
+    description: "Servicio legal completo con representación total en procedimientos judiciales y extrajudiciales, incluyendo litigación si es necesario.",
     features: [
       "Representación legal completa",
-      "Gestión de documentación y trámites",
-      "Seguimiento y comunicación constante"
+      "Gestión de procedimientos",
+      "Defensa en litigios",
+      "Comunicación constante"
     ],
-    price: "Presupuesto personalizado", 
-    buttonText: "Solicitar información", 
+    price: "Presupuesto personalizado",
+    buttonText: "Solicitar Representación",
     linkTo: "/representacion-integral",
-    color: "var(--sunshine)"
-  },
+    color: "#F9BA32" // Sunshine (color de acento)
+  }
 ];
 
+// Componente principal ServiceFlowGuide
 const ServiceFlowGuideComponent = () => {
-  const [expandedView, setExpandedView] = useState<boolean>(false);
-  const [activeStage, setActiveStage] = useState<number | null>(null);
+  // Estado para controlar la etapa activa
+  const [activeStage, setActiveStage] = useState<number>(1);
+  const [isCompactView, setIsCompactView] = useState<boolean>(window.innerWidth < 768);
   
-  // Función para alternar entre vista compacta y expandida
-  const toggleExpandedView = () => {
-    setExpandedView(!expandedView);
-    if (activeStage !== null) setActiveStage(null);
+  // Referencias para elementos del DOM
+  const stageRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const stageContainerRef = useRef<HTMLDivElement>(null);
+  const stageButtonsRef = useRef<(HTMLButtonElement | null)[]>([]);
+  
+  // Detección de dispositivo móvil
+  const [isMobile, setIsMobile] = useState<boolean>(window.innerWidth < 768);
+  
+  // Detección de preferencia de reducción de movimiento
+  const prefersReducedMotion = useReducedMotion();
+  
+  // Estado para manejar gestos táctiles
+  const [touchStartX, setTouchStartX] = useState<number | null>(null);
+  const [isDragging, setIsDragging] = useState<boolean>(false);
+  
+  // Inicializar referencias de etapas
+  useEffect(() => {
+    stageRefs.current = stageRefs.current.slice(0, stagesData.length);
+    stageButtonsRef.current = stageButtonsRef.current.slice(0, stagesData.length);
+    
+    // Detección de dispositivo móvil
+    const checkIfMobile = () => {
+      const isMobileView = window.innerWidth < 768;
+      setIsMobile(isMobileView);
+      setIsCompactView(isMobileView); // En móvil, iniciar con vista compacta
+    };
+    
+    checkIfMobile();
+    window.addEventListener('resize', checkIfMobile);
+    
+    return () => {
+      window.removeEventListener('resize', checkIfMobile);
+    };
+  }, []);
+  
+  // Función para manejar inicio de toque
+  const handleTouchStart = (e: React.TouchEvent) => {
+    setTouchStartX(e.touches[0].clientX);
+  };
+  
+  // Función para manejar fin de toque
+  const handleTouchEnd = (e: React.TouchEvent) => {
+    if (touchStartX === null) return;
+    
+    const endX = e.changedTouches[0].clientX;
+    const diff = touchStartX - endX;
+    
+    // Umbral mínimo para considerar un swipe válido
+    const minSwipeDistance = 50;
+    
+    if (Math.abs(diff) > minSwipeDistance) {
+      if (diff > 0) {
+        // Swipe hacia la izquierda (siguiente etapa)
+        setActiveStage(prev => Math.min(prev + 1, stagesData.length));
+      } else {
+        // Swipe hacia la derecha (etapa anterior)
+        setActiveStage(prev => Math.max(prev - 1, 1));
+      }
+    }
+    
+    // Resetear estados de toque
+    setTouchStartX(null);
+  };
+  
+  // Función para manejar arrastre con Framer Motion
+  const handleDrag = (_: any, info: PanInfo) => {
+    const { offset, velocity } = info;
+    
+    // Umbrales para considerar un swipe válido
+    const minVelocity = 100;
+    const minDistance = 30;
+    
+    if (Math.abs(offset.x) > minDistance || Math.abs(velocity.x) > minVelocity) {
+      if (offset.x < 0 || velocity.x < -minVelocity) {
+        // Arrastre hacia la izquierda (siguiente etapa)
+        setActiveStage(prev => Math.min(prev + 1, stagesData.length));
+      } else if (offset.x > 0 || velocity.x > minVelocity) {
+        // Arrastre hacia la derecha (etapa anterior)
+        setActiveStage(prev => Math.max(prev - 1, 1));
+      }
+    }
+    
+    setIsDragging(false);
+  };
+  
+  // Función para manejar navegación por teclado
+  const handleKeyNavigation = (e: KeyboardEvent<HTMLDivElement>, index: number) => {
+    // Navegación con flechas izquierda/derecha
+    if (e.key === 'ArrowRight') {
+      e.preventDefault();
+      setActiveStage(Math.min(index + 2, stagesData.length));
+    } else if (e.key === 'ArrowLeft') {
+      e.preventDefault();
+      setActiveStage(Math.max(index, 1));
+    }
+    
+    // Activar con Enter o Space
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      const targetElement = stageRefs.current[index];
+      targetElement?.focus();
+      targetElement?.setAttribute('aria-expanded', 'true');
+      setActiveStage(index + 1);
+    }
+  };
+  
+  // Efecto para hacer scroll a la etapa activa cuando cambia
+  useEffect(() => {
+    if (activeStage && stageRefs.current[activeStage - 1]) {
+      const activeElement = stageRefs.current[activeStage - 1];
+      
+      if (activeElement && stageContainerRef.current) {
+        // Scroll suave o inmediato según preferencia de reducción de movimiento
+        if (prefersReducedMotion) {
+          // Scroll inmediato para usuarios que prefieren menos animaciones
+          stageContainerRef.current.scrollLeft = activeElement.offsetLeft - (stageContainerRef.current.offsetWidth / 2) + (activeElement.offsetWidth / 2);
+        } else {
+          // Scroll suave con animación
+          activeElement.scrollIntoView({ 
+            behavior: 'smooth', 
+            block: 'nearest', 
+            inline: 'center' 
+          });
+        }
+      }
+      
+      // Actualizar foco para accesibilidad
+      stageButtonsRef.current[activeStage - 1]?.focus();
+    }
+  }, [activeStage, prefersReducedMotion]);
+  
+  // Título del componente
+  const componentTitle = "Nuestro flujo de servicio";
+
+  // Variantes de animación para Framer Motion
+  const cardVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: { opacity: 1, y: 0 },
+    exit: { opacity: 0, y: -20 }
   };
 
-  // Renderiza la vista compacta con tarjetas en línea pero con diseño mejorado
-  const renderCompactView = (): React.ReactNode => {
+  // Renderiza la vista compacta (móvil)
+  const renderCompactView = () => {
     return (
-      <div className="w-full py-8">
-        {/* Fondo decorativo con gradiente sutil */}
-        <div className="absolute inset-0 bg-gradient-to-br from-[var(--bone)] via-[var(--bone)] to-[var(--bone)] opacity-50 -z-10"></div>
+      <div className="w-full py-8" ref={stageContainerRef} role="region" aria-label="Flujo de servicio - Vista compacta">
+        {/* Título del componente */}
+        <Typography 
+          variant="h2" 
+          weight="bold"
+          className="text-center mb-8"
+          color="#2F3131"
+        >
+          {componentTitle}
+        </Typography>
+        
+        {/* Indicador visual de progreso */}
+        <div className="relative w-full h-2 bg-[#F8F1E5]/50 rounded-full mb-8 overflow-hidden"
+             aria-hidden="true">
+          <div 
+            className="absolute h-full bg-gradient-to-r from-[#426E86] to-[#426E86]/80 rounded-full transition-all duration-500 ease-in-out" 
+            style={{ 
+              width: `${(activeStage / stagesData.length) * 100}%`,
+              transition: prefersReducedMotion ? 'none' : 'width 0.5s ease-in-out'
+            }}
+          ></div>
+        </div>
       
-        {/* Contenedor principal con efecto de elevación */}
-        <div className="relative flex flex-col md:flex-row md:items-stretch gap-6 md:gap-2 overflow-hidden">
-        {stagesData.map((stage, index) => {
-          const isActive = index === activeStage;
-          const stageColor = stage.color;
-          
-          return (
-            <div key={stage.id} className="relative flex-1 group">
-              {/* Línea de conexión entre etapas (visible en dispositivos medianos y grandes) */}
-              {index < stagesData.length - 1 && (
-                <div className="hidden md:block absolute -right-3 top-1/2 transform -translate-y-1/2 z-10">
-                  <div className="relative">
-                    <div className="absolute inset-0 animate-pulse-subtle opacity-70 blur-sm" style={{ color: stageColor }}>
-                      <ElegantArrowIcon className="w-6 h-6" />
+        {/* Contenedor principal */}
+        <div className="relative overflow-hidden">
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={`stage-${activeStage}`}
+              initial={prefersReducedMotion ? { opacity: 1 } : { opacity: 0, x: 50 }}
+              animate={prefersReducedMotion ? { opacity: 1 } : { opacity: 1, x: 0 }}
+              exit={prefersReducedMotion ? { opacity: 0 } : { opacity: 0, x: -50 }}
+              transition={{ duration: prefersReducedMotion ? 0.1 : 0.3 }}
+              className="w-full"
+              onTouchStart={handleTouchStart}
+              onTouchEnd={handleTouchEnd}
+              drag={!prefersReducedMotion && isMobile ? "x" : false}
+              dragConstraints={{ left: 0, right: 0 }}
+              dragElastic={0.2}
+              onDragStart={() => setIsDragging(true)}
+              onDragEnd={handleDrag}
+            >
+              {stagesData.filter(stage => stage.id === activeStage).map((stage) => (
+                <Card 
+                  key={stage.id}
+                  className="w-full p-6 shadow-md hover:shadow-lg transition-shadow duration-300"
+                >
+                  <div 
+                    ref={el => { stageRefs.current[stage.id - 1] = el; }}
+                    onKeyDown={(e) => handleKeyNavigation(e, stage.id - 1)}
+                    tabIndex={0}
+                    role="region"
+                    aria-label={`Etapa ${stage.number}: ${stage.title}`}
+                  >
+                    <div className="flex items-center mb-4">
+                      <div className="mr-4">
+                        {getStageIcon(stage.number, true, prefersReducedMotion || false)}
+                      </div>
+                      <div>
+                        <Typography variant="h3" weight="bold" className="mb-1">
+                          {stage.title}
+                        </Typography>
+                        <Typography variant="body" className="text-[#2F3131]/80 text-sm">
+                          Etapa {stage.number} de {stagesData.length}
+                        </Typography>
+                      </div>
                     </div>
-                    <ElegantArrowIcon className={`w-6 h-6 text-[#64748B] group-hover:text-[${stageColor}] transition-colors duration-300`} />
-                  </div>
-                </div>
-              )}
-              
-              {/* Tarjeta para cada etapa con efectos mejorados */}
-              <Card 
-                className={`h-full transition-all duration-300 backdrop-blur-sm
-                  ${isActive 
-                    ? `bg-gradient-to-br from-[${stageColor}]/10 to-transparent border-l-4 border-l-[${stageColor}] shadow-lg shadow-[${stageColor}]/10` 
-                    : 'bg-white/90 hover:bg-[var(--bone)]/90'}`}
-                onClick={() => setActiveStage(index)}
-                withHover
-              >
-                <div className="flex flex-col h-full relative overflow-hidden">
-                  {/* Efecto de brillo en hover (solo visible cuando no está activo) */}
-                  {!isActive && (
-                    <div className="absolute inset-0 opacity-0 group-hover:opacity-100 bg-gradient-to-r from-transparent via-white/5 to-transparent bg-[length:200%_100%] animate-shimmer transition-opacity duration-300"></div>
-                  )}
-                  
-                  {/* Encabezado de la etapa con número e icono */}
-                  <div className="flex items-center justify-between mb-4">
-                    <div className="flex items-center">
-                      <StageNumber number={stage.number} isActive={isActive} />
-                      <h3 className={`ml-3 font-bold text-lg ${isActive ? 'text-[var(--coal)]' : 'text-[var(--coal)] group-hover:text-[var(--coal)]'} transition-all duration-300`}>
-                        {stage.shortTitle}
-                      </h3>
-                    </div>
-                    <div className="flex-shrink-0">
-                      {getStageIcon(stage.number, isActive)}
-                    </div>
-                  </div>
-                  
-                  {/* Descripción de la etapa con animación de aparición/desaparición */}
-                  <div className={`mt-2 overflow-hidden transition-all duration-300 ease-in-out
-                    ${isActive ? 'max-h-24 opacity-100' : 'max-h-0 md:max-h-12 opacity-0 md:opacity-70'}`}>
-                    <p className={`text-sm ${isActive ? 'text-[var(--coal)]' : 'text-[var(--coal)]'} transition-colors duration-300`}>
+                    
+                    <Typography variant="body" className="mb-4">
                       {stage.description}
-                    </p>
-                  </div>
-                  
-                  {/* Precio (siempre visible) con efecto de resaltado */}
-                  <div className="mt-auto pt-4">
-                      <div className="flex justify-between items-center">
-                      <span className={`text-sm font-medium ${isActive ? `text-[${stageColor}]` : 'text-[var(--coal)] group-hover:text-[var(--sunshine)]'} transition-all duration-300`}>
+                    </Typography>
+                    
+                    <div className="mb-4">
+                      <Typography variant="body" weight="medium" className="mb-2">
+                        Características:
+                      </Typography>
+                      <ul className="list-disc pl-5 space-y-1">
+                        {stage.features.map((feature, idx) => (
+                          <li key={idx}>
+                            <Typography variant="body" className="text-sm">
+                              {feature}
+                            </Typography>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                    
+                    <div className="flex flex-col sm:flex-row justify-between items-center mt-6">
+                      <Typography 
+                        variant="body" 
+                        weight="bold" 
+                        className="mb-3 sm:mb-0 text-[#426E86]"
+                      >
                         {stage.price}
-                      </span>
+                      </Typography>
+                      
+                      <Link to={stage.linkTo}>
+                        <Button 
+                          variant="primary"
+                          className="bg-[#426E86] hover:bg-[#426E86]/90 text-white"
+                        >
+                          {stage.buttonText.toUpperCase()}
+                        </Button>
+                      </Link>
+                    </div>
+                    
+                    {/* Botones de navegación para móvil */}
+                    <div className="flex justify-between mt-6 pt-4 border-t border-[#F8F1E5]/30">
+                      <Button
+                        variant="text"
+                        onClick={() => setActiveStage(Math.max(activeStage - 1, 1))}
+                        disabled={activeStage <= 1}
+                        className={activeStage <= 1 ? 'invisible' : 'text-[#426E86]'}
+                        aria-label="Etapa anterior"
+                      >
+                        <span className="flex items-center">
+                          <ElegantArrowIcon className="w-4 h-4 mr-1 transform rotate-180" />
+                          ANTERIOR
+                        </span>
+                      </Button>
+                      
+                      <Button
+                        variant="text"
+                        onClick={() => setActiveStage(Math.min(activeStage + 1, stagesData.length))}
+                        disabled={activeStage >= stagesData.length}
+                        className={activeStage >= stagesData.length ? 'invisible' : 'text-[#426E86]'}
+                        aria-label="Siguiente etapa"
+                      >
+                        <span className="flex items-center">
+                          SIGUIENTE
+                          <ElegantArrowIcon className="w-4 h-4 ml-1" />
+                        </span>
+                      </Button>
+                    </div>
+                    
+                    {/* Botón para expandir vista en dispositivos grandes */}
+                    {!isMobile && (
+                      <div className="text-center mt-6">
+                        <Button
+                          variant="text"
+                          onClick={() => setIsCompactView(false)}
+                          className="text-[#426E86] hover:text-[#426E86]/80"
+                          aria-label="Ver todas las etapas"
+                        >
+                          <span className="flex items-center justify-center">
+                            <InfoIcon className="w-4 h-4 mr-1" />
+                            VER TODAS LAS ETAPAS
+                          </span>
+                        </Button>
+                      </div>
+                    )}
+                  </div>
+                </Card>
+              ))}
+            </motion.div>
+          </AnimatePresence>
+          
+          {/* Indicadores de navegación para desktop */}
+          <div className="flex justify-center mt-8 space-x-1">
+            {stagesData.map((stage) => (
+              <button
+                key={`indicator-${stage.id}`}
+                onClick={() => setActiveStage(stage.id)}
+                className={`w-2 h-2 rounded-full transition-all duration-300 ${activeStage === stage.id 
+                  ? 'bg-[#426E86] w-4' 
+                  : 'bg-[#426E86]/50 opacity-50 hover:opacity-75'}`}
+                aria-label={`Ir a etapa ${stage.number}`}
+                aria-current={activeStage === stage.id ? 'step' : undefined}
+                ref={el => { stageButtonsRef.current[stage.id - 1] = el; }}
+              />
+            ))}
+          </div>
+        </div>
+      </div>
+    );
+  };
+
+  // Renderizar vista expandida (desktop)
+  const renderExpandedView = () => {
+    return (
+      <div className="w-full py-8" role="region" aria-label="Flujo de servicio - Vista expandida">
+        <div className="flex justify-between items-center mb-8">
+          <Typography 
+            variant="h2" 
+            weight="bold"
+            color="#2F3131"
+          >
+            {componentTitle}
+          </Typography>
+          
+          <Button
+            variant="text"
+            onClick={() => setIsCompactView(true)}
+            className="text-[#426E86] hover:text-[#426E86]/80"
+            aria-label="Volver a vista compacta"
+          >
+            <span className="flex items-center">
+              <ElegantArrowIcon className="w-4 h-4 mr-1 transform rotate-180" />
+              VOLVER
+            </span>
+          </Button>
+        </div>
+        
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {stagesData.map((stage, index) => (
+            <motion.div
+              key={stage.id}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ 
+                duration: prefersReducedMotion ? 0.1 : 0.3,
+                delay: prefersReducedMotion ? 0 : index * 0.1 // Efecto escalonado
+              }}
+            >
+              <Card 
+                className={`w-full h-full p-6 shadow-md hover:shadow-lg transition-shadow duration-300 ${activeStage === stage.id ? 'ring-2 ring-[#426E86]' : ''}`}
+              >
+                <div
+                  ref={el => { stageRefs.current[stage.id - 1] = el; }}
+                  tabIndex={0}
+                  role="region"
+                  aria-label={`Etapa ${stage.number}: ${stage.title}`}
+                >
+                  <div className="flex items-center mb-4">
+                    <div className="mr-4">
+                      {getStageIcon(stage.number, activeStage === stage.id, prefersReducedMotion || false)}
+                    </div>
+                    <div>
+                      <Typography variant="h4" weight="bold" className="mb-1">
+                        {stage.title}
+                      </Typography>
+                      <Typography variant="body" className="text-[#2F3131] text-xs">
+                        Etapa {stage.number}
+                      </Typography>
                     </div>
                   </div>
                   
-                  {/* Botón de acción con animación de aparición */}
-                  <div className={`mt-4 transition-all duration-300 ease-in-out overflow-hidden ${isActive ? 'max-h-12 opacity-100' : 'max-h-0 opacity-0'}`}>
+                  <Typography variant="body" className="mb-4 text-sm">
+                    {stage.description}
+                  </Typography>
+                  
+                  <div className="mb-4">
+                    <Typography variant="body" weight="medium" className="mb-2 text-sm">
+                      Características:
+                    </Typography>
+                    <ul className="list-disc pl-5 space-y-1">
+                      {stage.features.map((feature, idx) => (
+                        <li key={idx}>
+                          <Typography variant="body" className="text-xs">
+                            {feature}
+                          </Typography>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                  
+                  {/* Footer */}
+                  <div className="p-5 bg-[#F8F1E5]/50">
+                    <div className="flex justify-between items-center mb-4">
+                      <Typography 
+                        variant="body" 
+                        className="text-[#2F3131]/80"
+                      >
+                        Precio:
+                      </Typography>
+                      <Typography 
+                        variant="body" 
+                        weight="bold" 
+                        className="text-[#F9BA32]"
+                      >
+                        {stage.price}
+                      </Typography>
+                    </div>
                     <Link to={stage.linkTo} className="block">
                       <Button 
-                        variant="secondary"
-                        className={`w-full font-medium bg-[${stageColor}]/10 hover:bg-[${stageColor}]/20 text-[${stageColor}] shadow-sm shadow-[${stageColor}]/20 transition-all duration-300`}
+                        variant="primary" 
+                        className="w-full justify-center bg-[#426E86] hover:bg-[#426E86]/90 text-white shadow-md transition-all duration-300"
+                        aria-label={`Solicitar ${stage.shortTitle}`}
                       >
-                        {stage.buttonText}
+                        <Typography 
+                          variant="body" 
+                          weight="medium" 
+                          color="white" 
+                          as="span"
+                        >
+                          SOLICITAR AHORA
+                        </Typography>
                       </Button>
                     </Link>
                   </div>
                 </div>
               </Card>
-            </div>
-          );
-        })}
-      </div>
-      
-        {/* Botón para alternar a la vista expandida con efectos mejorados */}
-        <div className="flex justify-center mt-8">
-          <button 
-            onClick={toggleExpandedView}
-            className="flex items-center gap-2 text-sm text-[var(--coal)] hover:text-[var(--sunshine)] bg-white hover:bg-[var(--bone)] px-5 py-2.5 rounded-full border border-[var(--steel-blue)]/30 hover:border-[var(--sunshine)]/50 transition-all duration-300 hover:shadow-md transform hover:-translate-y-0.5 active:translate-y-0 hover:scale-102"
-          >
-            <InfoIcon className="w-5 h-5" />
-            Ver detalles completos
-          </button>
-        </div>
-      </div>
-    );
-  }
-
-  // Renderiza la vista expandida con tarjetas detalladas
-  const renderExpandedView = (): React.ReactNode => {
-    return (
-      <div className="w-full py-6">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {stagesData.map((stage) => (
-            <Card 
-              key={stage.id}
-              className={`overflow-hidden border-t-4 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105`}
-              style={{borderTopColor: stage.color}}
-            >
-              {/* Header */}
-              <div className="p-5 bg-gradient-to-r from-[var(--bone)] to-transparent">
-                <div className="flex items-center gap-3 mb-3">
-                  <StageNumber number={stage.number} isActive={true} />
-                  <h3 className="font-bold text-lg bg-gradient-to-r from-[var(--steel-blue)] to-[var(--steel-blue-light)] text-transparent bg-clip-text">{stage.shortTitle}</h3>
-                  <div className="ml-auto">{getStageIcon(stage.number, true)}</div>
-                </div>
-                <p className="text-[var(--coal)]">{stage.description}</p>
-              </div>
-              
-              {/* Features */}
-              <div className="p-5 border-t border-b border-[var(--steel-blue)]/20">
-                <h4 className="text-[var(--steel-blue)] font-medium text-sm mb-3">Características:</h4>
-                <ul className="space-y-2">
-                  {stage.features.map((feature, i) => (
-                    <li key={i} className="flex items-start gap-2 text-sm text-[var(--coal)]">
-                      <span className="text-[var(--steel-blue)] flex-shrink-0 mt-1">✓</span>
-                      <span>{feature}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-              
-              {/* Footer */}
-              <div className="p-5 bg-[var(--bone)]/50">
-                <div className="flex justify-between items-center mb-4">
-                  <span className="text-[var(--coal)]">Precio:</span>
-                  <span className="font-bold text-[var(--sunshine)] drop-shadow-sm">{stage.price}</span>
-                </div>
-                <Link to={stage.linkTo} className="block">
-                  <Button 
-                    variant="secondary" 
-                    className="w-full bg-[var(--steel-blue)]/10 hover:bg-[var(--steel-blue)]/20 text-[var(--steel-blue)] shadow-sm transition-all duration-300"
-                    style={{backgroundColor: `${stage.color}10`, color: stage.color}}
-                  >
-                    {stage.buttonText}
-                  </Button>
-                </Link>
-              </div>
-            </Card>
+            </motion.div>
           ))}
         </div>
         
         {/* Toggle compact view button */}
         <div className="flex justify-center mt-6">
-          <button 
-            onClick={toggleExpandedView}
-            className="flex items-center gap-2 text-sm text-[var(--coal)] hover:text-[var(--sunshine)] bg-white hover:bg-[var(--bone)] px-4 py-2 rounded-full border border-[var(--steel-blue)]/30 hover:border-[var(--sunshine)]/50 transition-all duration-300 hover:shadow-md hover:scale-102 transform"
+          <Button 
+            variant="text"
+            onClick={() => setIsCompactView(true)}
+            className="flex items-center gap-2 text-sm text-[#2F3131] hover:text-[#F9BA32] bg-[#F8F1E5] hover:bg-[#F8F1E5]/80 px-4 py-2 rounded-full border border-[#426E86]/30 hover:border-[#F9BA32]/50 transition-all duration-300 hover:shadow-md"
+            aria-label="Ver vista compacta de los servicios"
           >
-            <InfoIcon className="w-4 h-4" />
-            Ver vista compacta
-          </button>
+            <InfoIcon className="w-4 h-4" aria-hidden="true" />
+            <Typography 
+              variant="body" 
+              as="span"
+            >
+              VER VISTA COMPACTA
+            </Typography>
+          </Button>
         </div>
       </div>
     );
   };
 
-  return expandedView ? renderExpandedView() : renderCompactView();
-}
+  return isCompactView ? renderCompactView() : renderExpandedView();
+};
 
-// Solo exportamos el componente como default
 export default ServiceFlowGuideComponent;

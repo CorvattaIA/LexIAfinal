@@ -3,6 +3,7 @@ import React from 'react';
 import { Routes, Route, useLocation, Link } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Home from './components/Home';
+import ComponentDemo from './ComponentDemo';
 // Old AssessmentTest is moved to DiagnosticoInicialPage
 // import AssessmentTest from './components/AssessmentTest'; 
 import AssistanceChat from './components/AssistanceChat';
@@ -53,6 +54,7 @@ const App: React.FC = () => {
           <Route path="/lexia-chat" element={<LexiaChat />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/data-policy" element={<DataPolicyPage />} />
+          <Route path="/component-demo" element={<ComponentDemo />} />
         </Routes>
       </main>
       <footer className="bg-[var(--steel-blue)] text-white text-center p-6 shadow-inner mt-auto border-t border-[var(--coal)]/10">
